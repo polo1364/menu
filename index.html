@@ -3,122 +3,252 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <title>鍋燒組合點餐</title>
+  <title>鍋燒菜單（乾淨修正版）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    select, input[type="number"] { margin: 0 10px 10px 0; }
-    table, th, td { border: 1px solid #999; border-collapse: collapse; padding: 8px; }
-    th { background-color: #f0f0f0; }
+h1 {
+  font-size: 2em;
+  color: #b22222;
+  text-align: center;
+  margin-bottom: 30px;
+}
+h2 {
+  font-size: 1.4em;
+  margin-top: 40px;
+  color: #333;
+}
+.menu-table th {
+  background-color: #f8f8f8;
+}
+.menu-table td input[type='number'] {
+  text-align: center;
+}
+
+    body { font-family: "Noto Sans TC", sans-serif; padding: 20px; max-width: 960px; margin: auto; }
+    h2 { color: #b20000; border-bottom: 2px solid #ddd; padding-bottom: 5px; margin-top: 40px; }
+    .menu-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .menu-table th, .menu-table td { border: 1px solid #ccc; padding: 8px; }
+    .menu-table td:last-child { text-align: right; }
+    input[type="number"] { width: 60px; }
+    button { padding: 10px 20px; background: #b20000; color: white; border: none; margin-right: 10px; margin-top: 20px; }
   </style>
 </head>
 <body>
 
-<h2>鍋燒組合選單</h2>
 
-<label>選擇湯底：</label>
+<div style="position: relative; margin-bottom: 30px;">
+  <div style="text-align: center; font-size: 2.4em; color: #b22222; font-weight: bold;">一翻鑫</div>
+  <div style="position: absolute; right: 0; top: 0; font-size: 0.9em; color: #666;">電話：0978-667-183</div>
+</div>
+
+
+<h2>鍋燒</h2>
 <select id="soupSelect">
-  <option value="">-- 請選擇 --</option>
+  <option value="" disabled selected>選擇湯底</option>
   <option value="原味" data-price="85">原味</option>
   <option value="石頭" data-price="90">石頭</option>
   <option value="沙茶" data-price="90">沙茶</option>
   <option value="泡菜" data-price="100">泡菜</option>
-  <option value="麻奶（辣）" data-price="110">麻奶（辣）</option>
   <option value="牛奶起司" data-price="110">牛奶起司</option>
+  <option value="麻辣（辣）" data-price="110">麻辣（辣）</option>
+  <option value="麻奶（辣）" data-price="120">麻奶（辣）</option>
+  <option value="藤椒酸湯燒（辣）" data-price="130">藤椒酸湯燒（辣）</option>
 </select>
 
-<label>選擇麵種：</label>
 <select id="noodleSelect">
-  <option value="">-- 請選擇 --</option>
+  <option value="" disabled selected>選擇麵種</option>
   <option value="意麵" data-extra="10">意麵</option>
   <option value="雞絲麵" data-extra="10">雞絲麵</option>
   <option value="泡麵" data-extra="10">泡麵</option>
   <option value="冬粉" data-extra="10">冬粉</option>
-  <option value="讚岐" data-extra="15">讚岐</option>
-  <option value="烏龍" data-extra="15">烏龍</option>
+  <option value="讚岐烏龍麵" data-extra="15">讚岐烏龍麵</option>
 </select>
 
-<button onclick="addCombo()">生成組合</button>
+<button onclick="addCombo()">新增組合</button>
 
-<h3>已選擇的組合</h3>
-<table id="comboTable">
+
+<table class="menu-table" id="comboTable">
   <thead>
-    <tr>
-      <th>組合名稱</th>
-      <th>價格</th>
-      <th>數量</th>
-    </tr>
+    <tr><th>組合名稱</th><th>價格</th><th>數量</th><th>加麵數</th></tr>
   </thead>
   <tbody id="comboBody"></tbody>
 </table>
 
-<br>
+
+<h2>其他菜單項目</h2>
+
+
+<table class="menu-table" id="menuTable">
+  <thead><tr>
+    <th style="width:5%"></th>
+    <th style="width:50%">品項</th>
+    <th style="width:15%">價格</th>
+    <th style="width:15%">數量</th>
+    <th style="width:15%">加飯／加麵數</th>
+  </tr></thead>
+  <tbody id="menuBody">
+  <tr><th colspan="5" style="text-align:left; background:#f0f0f0">蓋飯</th></tr>
+<tr><td colspan="1"></td><td>回鍋肉蓋飯</td><td>100</td><td><input type="number" min="0" value="0" data-name="回鍋肉蓋飯" data-price="100"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>醬烤豬五花蓋飯</td><td>100</td><td><input type="number" min="0" value="0" data-name="醬烤豬五花蓋飯" data-price="100"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>甘甜培根牛丼飯</td><td>100</td><td><input type="number" min="0" value="0" data-name="甘甜培根牛丼飯" data-price="100"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>塩烤松阪豬蓋飯</td><td>110</td><td><input type="number" min="0" value="0" data-name="塩烤松阪豬蓋飯" data-price="110"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>蔥爆牛肉蓋飯</td><td>110</td><td><input type="number" min="0" value="0" data-name="蔥爆牛肉蓋飯" data-price="110"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>沙茶牛肉蓋飯</td><td>110</td><td><input type="number" min="0" value="0" data-name="沙茶牛肉蓋飯" data-price="110"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>醬烤牛胸腹蓋飯</td><td>110</td><td><input type="number" min="0" value="0" data-name="醬烤牛胸腹蓋飯" data-price="110"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>香蔥油雞蓋飯</td><td>120</td><td><input type="number" min="0" value="0" data-name="香蔥油雞蓋飯" data-price="120"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>照燒雞腿蓋飯</td><td>120</td><td><input type="number" min="0" value="0" data-name="照燒雞腿蓋飯" data-price="120"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>紐奧良雞腿蓋飯</td><td>120</td><td><input type="number" min="0" value="0" data-name="紐奧良雞腿蓋飯" data-price="120"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>炸豬排蓋飯</td><td>120</td><td><input type="number" min="0" value="0" data-name="炸豬排蓋飯" data-price="130"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>柚香嫩肩牛蓋飯</td><td>140</td><td><input type="number" min="0" value="0" data-name="柚香嫩肩牛蓋飯" data-price="140"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><th colspan="5" style="text-align:left; background:#f0f0f0">炒飯‧麵</th></tr>
+<tr><td colspan="1"></td><td>火腿炒飯</td><td>80</td><td><input type="number" min="0" value="0" data-name="火腿炒飯" data-price="80"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>培根炒飯</td><td>85</td><td><input type="number" min="0" value="0" data-name="培根炒飯" data-price="85"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>肉絲炒飯</td><td>85</td><td><input type="number" min="0" value="0" data-name="肉絲炒飯" data-price="85"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>香腸炒飯</td><td>90</td><td><input type="number" min="0" value="0" data-name="香腸炒飯" data-price="90"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>鹹魚炒飯</td><td>90</td><td><input type="number" min="0" value="0" data-name="鹹魚炒飯" data-price="90"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>鹹豬肉炒飯</td><td>90</td><td><input type="number" min="0" value="0" data-name="鹹豬肉炒飯" data-price="90"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>蝦仁炒飯</td><td>95</td><td><input type="number" min="0" value="0" data-name="蝦仁炒飯" data-price="95"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>櫻蝦香辣炒飯（辣）</td><td>95</td><td><input type="number" min="0" value="0" data-name="櫻蝦香辣炒飯（辣）" data-price="95"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>泡菜炒飯</td><td>100</td><td><input type="number" min="0" value="0" data-name="泡菜炒飯" data-price="100"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>牛肉炒飯</td><td>100</td><td><input type="number" min="0" value="0" data-name="牛肉炒飯" data-price="100"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>什錦炒飯</td><td>100</td><td><input type="number" min="0" value="0" data-name="什錦炒飯" data-price="100"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>老乾媽珠貝炒飯（辣）</td><td>120</td><td><input type="number" min="0" value="0" data-name="老乾媽珠貝炒飯（辣）" data-price="120"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>什錦炒麵</td><td>100</td><td><input type="number" min="0" value="0" data-name="什錦炒麵" data-price="100"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>什錦炒意麵</td><td>100</td><td><input type="number" min="0" value="0" data-name="什錦炒意麵" data-price="100"></td><td><input type="number" min="0" value="0" data-addon="15" style="width:50px;" /></td></tr>
+<tr><td colspan="1"></td><td>什錦炒泡麵</td><td>100</td><td><input type="number" min="0" value="0" data-name="什錦炒泡麵" data-price="100"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td></tr>
+<tr><th colspan="5" style="text-align:left; background:#f0f0f0">炸物</th></tr>
+<tr><td colspan="1"></td><td>旗魚黑輪</td><td>30</td><td><input type="number" min="0" value="0" data-name="旗魚黑輪" data-price="30"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>手工黑輪片</td><td>30</td><td><input type="number" min="0" value="0" data-name="手工黑輪片" data-price="30"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>可樂餅</td><td>30</td><td><input type="number" min="0" value="0" data-name="可樂餅" data-price="30"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>炸魚排</td><td>35</td><td><input type="number" min="0" value="0" data-name="炸魚排" data-price="35"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>胖薯</td><td>40</td><td><input type="number" min="0" value="0" data-name="胖薯" data-price="40"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>章魚小丸子</td><td>40</td><td><input type="number" min="0" value="0" data-name="章魚小丸子" data-price="40"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>唐揚雞</td><td>50</td><td><input type="number" min="0" value="0" data-name="唐揚雞" data-price="50"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>就魚圈</td><td>60</td><td><input type="number" min="0" value="0" data-name="就魚圈" data-price="60"></td><td>-</td></tr>
+<tr><th colspan="5" style="text-align:left; background:#f0f0f0">涼品小菜</th></tr>
+<tr><td colspan="1"></td><td>燻煙豬耳朵</td><td>30</td><td><input type="number" min="0" value="0" data-name="燻煙豬耳朵" data-price="30"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>涼拌黃瓜（辣）</td><td>30</td><td><input type="number" min="0" value="0" data-name="涼拌黃瓜（辣）" data-price="30"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>各式小菜</td><td>30</td><td><input type="number" min="0" value="0" data-name="各式小菜" data-price="30"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>皮蛋豆腐</td><td>35</td><td><input type="number" min="0" value="0" data-name="皮蛋豆腐" data-price="35"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>涼拌香菜牛肉（限量/辣）</td><td>60</td><td><input type="number" min="0" value="0" data-name="涼拌香菜牛肉（限量/辣）" data-price="60"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>口水雞（限量/辣）</td><td>70</td><td><input type="number" min="0" value="0" data-name="口水雞（限量/辣）" data-price="70"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>醉雞（限量）</td><td>70</td><td><input type="number" min="0" value="0" data-name="醉雞（限量）" data-price="70"></td><td>-</td></tr>
+<tr><th colspan="5" style="text-align:left; background:#f0f0f0">飲品</th></tr>
+<tr><td colspan="1"></td><td>玻璃罐飲品</td><td>20</td><td><input type="number" min="0" value="0" data-name="玻璃罐飲品" data-price="20"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>紅茶</td><td>25</td><td><input type="number" min="0" value="0" data-name="紅茶" data-price="25"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>原萃茶</td><td>25</td><td><input type="number" min="0" value="0" data-name="原萃茶" data-price="25"></td><td>-</td></tr>
+<tr><td colspan="1"></td><td>紅茶牛奶</td><td>40</td><td><input type="number" min="0" value="0" data-name="紅茶牛奶" data-price="40"></td><td>-</td></tr>
+
+  </tbody>
+</table>
+
+
+
 <button onclick="calculateTotal()">計算總金額</button>
 <button onclick="printMenu()">列印菜單</button>
 <p id="totalPrice"></p>
+
+
+
+
 
 <script>
 function addCombo() {
   const soup = document.getElementById("soupSelect");
   const noodle = document.getElementById("noodleSelect");
+  const soupOption = soup.options[soup.selectedIndex];
+  const noodleOption = noodle.options[noodle.selectedIndex];
 
-  const soupName = soup.value;
-  const noodleName = noodle.value;
-
-  if (!soupName || !noodleName) {
-    alert("請選擇湯底和麵種！");
+  if (!soupOption || !noodleOption || !soupOption.value || !noodleOption.value) {
+    alert("請選擇湯底與麵種！");
     return;
   }
 
-  const soupPrice = Number(soup.selectedOptions[0].dataset.price);
-  const noodleExtra = Number(noodle.selectedOptions[0].dataset.extra);
+  const soupName = soupOption.value;
+  const noodleName = noodleOption.value;
+  const soupPrice = parseInt(soupOption.getAttribute("data-price")) || 0;
+
+  let extra = 0;
+  if (noodleName.includes("讚岐烏龍")) {
+    extra = 15;
+  }
+
   const comboName = soupName + noodleName;
-  const comboPrice = soupPrice + noodleExtra;
+  const comboPrice = soupPrice + extra;
 
   if (document.getElementById(comboName)) return;
 
-  const row = document.createElement("tr");
-  row.id = comboName;
-  row.innerHTML = `
+  const rowHTML = `<tr id="${comboName}">
     <td>${comboName}</td>
     <td>${comboPrice}</td>
-    <td><input type="number" min="0" value="0" data-price="${comboPrice}" data-name="${comboName}"></td>
-  `;
-  document.getElementById("comboBody").appendChild(row);
+    <td><input type="number" min="0" value="0" data-name="${comboName}" data-price="${comboPrice}"></td>
+    <td><input type="number" min="0" value="0" data-addon="25" style="width:50px;" /></td>
+  </tr>`;
+  document.getElementById("comboBody").insertAdjacentHTML("beforeend", rowHTML);
 }
 
 function calculateTotal() {
-  const inputs = document.querySelectorAll('#comboBody input');
+  const inputs = document.querySelectorAll("input[type='number']");
   let total = 0;
-  inputs.forEach(input => {
-    const qty = Number(input.value);
-    const price = Number(input.dataset.price);
-    if (qty > 0) total += qty * price;
+  inputs.forEach(i => {
+    const qty = Number(i.value);
+    const price = Number(i.dataset.price);
+    if (!i.dataset.name || qty === 0) return;
+
+    let addonQty = 0;
+    let addonUnit = 0;
+    const row = i.closest("tr");
+    const addonInput = row.querySelector("input[data-addon]");
+    if (addonInput) {
+      addonQty = Number(addonInput.value);
+      addonUnit = Number(addonInput.dataset.addon);
+    }
+
+    total += qty * price + addonQty * addonUnit;
   });
-  document.getElementById('totalPrice').textContent = `總金額：${total} 元`;
+  document.getElementById("totalPrice").textContent = `總金額：${total} 元`;
 }
 
 function printMenu() {
-  const inputs = document.querySelectorAll('#comboBody input');
-  let printContent = '<h3>列印菜單</h3><table border="1" cellpadding="6" cellspacing="0"><tr><th>組合名稱</th><th>價格</th><th>數量</th><th>小計</th></tr>';
-  inputs.forEach(input => {
-    const qty = Number(input.value);
-    if (qty > 0) {
-      const name = input.dataset.name;
-      const price = Number(input.dataset.price);
-      const subtotal = qty * price;
-      printContent += `<tr><td>${name}</td><td>${price}</td><td>${qty}</td><td>${subtotal}</td></tr>`;
-    }
-  });
-  printContent += '</table>';
+  const inputs = document.querySelectorAll("input[type='number']");
+  let rows = "";
+  inputs.forEach(i => {
+    const qty = Number(i.value);
+    if (!i.dataset.name || qty === 0) return;
 
-  const win = window.open('', '', 'width=600,height=600');
-  win.document.write('<html><head><title>列印菜單</title></head><body>');
-  win.document.write(printContent);
-  win.document.write('</body></html>');
+    const name = i.dataset.name;
+    const price = Number(i.dataset.price);
+    const row = i.closest("tr");
+    const addonInput = row.querySelector("input[data-addon]");
+    let addonQty = 0;
+    let addonUnit = 0;
+    if (addonInput) {
+      addonQty = Number(addonInput.value);
+      addonUnit = Number(addonInput.dataset.addon);
+    }
+    const subtotal = qty * price + addonQty * addonUnit;
+    let addonNote = addonQty > 0 ? `（共${qty}份，${addonQty}份加麵+${addonUnit}元）` : `（共${qty}份）`;
+    rows += '<tr><td>' + name + addonNote + '</td><td>' + price + '</td><td>' + qty + '</td><td>' + subtotal + '</td></tr>';
+  });
+
+  if (!rows) {
+    alert("沒有項目有填數量，無法列印。");
+    return;
+  }
+
+  let html = '<html><head><title>列印菜單</title></head><body>';
+  html += '<h3>列印菜單</h3><table border="1" cellpadding="6" cellspacing="0">';
+  html += '<tr><th>品項</th><th>單價</th><th>數量</th><th>小計</th></tr>';
+  html += rows;
+  html += '</table></body></html>';
+
+  const win = window.open('', '', 'width=800,height=600');
+  win.document.write(html);
   win.document.close();
   win.print();
 }
 </script>
-
 </body>
 </html>
+
+
