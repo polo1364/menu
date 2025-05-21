@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>鍋燒組合點餐</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    select, input[type="number"] { margin: 0 10px 10px 0; }
+    table, th, td { border: 1px solid #999; border-collapse: collapse; padding: 8px; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<h2>鍋燒組合選單</h2>
+
+<label>選擇湯底：</label>
+<select id="soupSelect">
+  <option value="">-- 請選擇 --</option>
+  <option value="原味" data-price="85">原味</option>
+  <option value="石頭" data-price="90">石頭</option>
+  <option value="沙茶" data-price="90">沙茶</option>
+  <option value="泡菜" data-price="100">泡菜</option>
+  <option value="麻奶（辣）" data-price="110">麻奶（辣）</option>
+  <option value="牛奶起司" data-price="110">牛奶起司</option>
+</select>
+
+<label>選擇麵種：</label>
+<select id="noodleSelect">
+  <option value="">-- 請選擇 --</option>
+  <option value="意麵" data-extra="10">意麵</option>
+  <option value="雞絲麵" data-extra="10">雞絲麵</option>
+  <option value="泡麵" data-extra="10">泡麵</option>
+  <option value="冬粉" data-extra="10">冬粉</option>
+  <option value="讚岐" data-extra="15">讚岐</option>
+  <option value="烏龍" data-extra="15">烏龍</option>
+</select>
+
+<button onclick="addCombo()">生成組合</button>
+
+<h3>已選擇的組合</h3>
+<table id="comboTable">
+  <thead>
+    <tr>
+      <th>組合名稱</th>
+      <th>價格</th>
+      <th>數量</th>
+    </tr>
+  </thead>
+  <tbody id="comboBody"></tbody>
+</table>
+
+<br>
+<button onclick="calculateTotal()">計算總金額</button>
+<button onclick="printMenu()">列印菜單</button>
+<p id="totalPrice"></p>
+
+<script>
+function addCombo() {
+  const soup = document.getElementById("soupSelect");
+  const noodle = document.getElementById("noodleSelect");
+
+  const soupName = soup.value;
+  const noodleName = noodle.value;
+
+  if (!soupName || !noodleName) {
+    alert("請選擇湯底和麵種！");
+    return;
+  }
+
+  const soupPrice = Number(soup.selectedOptions[0].dataset.price);
+  const noodleExtra = Number(noodle.selectedOptions[0].dataset.extra);
+  const comboName = soupName + noodleName;
+  const comboPrice = soupPrice + noodleExtra;
+
+  if (document.getElementById(comboName)) return;
+
+  const row = document.createElement("tr");
+  row.id = comboName;
+  row.innerHTML = `
+    <td>${comboName}</td>
+    <td>${comboPrice}</td>
+    <td><input type="number" min="0" value="0" data-price="${comboPrice}" data-name="${comboName}"></td>
+  `;
+  document.getElementById("comboBody").appendChild(row);
+}
+
+function calculateTotal() {
+  const inputs = document.querySelectorAll('#comboBody input');
+  let total = 0;
+  inputs.forEach(input => {
+    const qty = Number(input.value);
+    const price = Number(input.dataset.price);
+    if (qty > 0) total += qty * price;
+  });
+  document.getElementById('totalPrice').textContent = `總金額：${total} 元`;
+}
+
+function printMenu() {
+  const inputs = document.querySelectorAll('#comboBody input');
+  let printContent = '<h3>列印菜單</h3><table border="1" cellpadding="6" cellspacing="0"><tr><th>組合名稱</th><th>價格</th><th>數量</th><th>小計</th></tr>';
+  inputs.forEach(input => {
+    const qty = Number(input.value);
+    if (qty > 0) {
+      const name = input.dataset.name;
+      const price = Number(input.dataset.price);
+      const subtotal = qty * price;
+      printContent += `<tr><td>${name}</td><td>${price}</td><td>${qty}</td><td>${subtotal}</td></tr>`;
+    }
+  });
+  printContent += '</table>';
+
+  const win = window.open('', '', 'width=600,height=600');
+  win.document.write('<html><head><title>列印菜單</title></head><body>');
+  win.document.write(printContent);
+  win.document.write('</body></html>');
+  win.document.close();
+  win.print();
+}
+</script>
+
+</body>
+</html>
