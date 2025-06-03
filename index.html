@@ -205,11 +205,12 @@ function addCombo() {
   if (document.getElementById(comboName)) return;
 
   const rowHTML = `<tr id="${comboName}">
-    <td>${comboName}</td>
-    <td>${comboPrice}</td>
-    <td><input type="number" min="0" value="0" data-name="${comboName}" data-price="${comboPrice}"></td>
-    <td><input type="number" min="0" value="0" data-addon="25" style="width:50px;" /></td>
-  </tr>`;
+  <td>${comboName}</td>
+  <td>${comboPrice}</td>
+  <td><input type="number" min="0" value="0" data-name="${comboName}" data-price="${comboPrice}"></td>
+  <td><input type="number" min="0" value="0" data-addon="25" style="width:50px;" /></td>
+  <td><input type="number" min="0" value="0" data-spicy="0" style="width:50px;" /></td>
+</tr>`;
   document.getElementById("comboBody").insertAdjacentHTML("beforeend", rowHTML);
 }
 
