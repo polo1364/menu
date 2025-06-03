@@ -94,7 +94,13 @@ h2 {
 
 <table class="menu-table" id="comboTable">
   <thead>
-    <tr><th>組合名稱</th><th>價格</th><th>數量</th><th>加麵數</th><th>加辣</th></tr>
+    <tr>
+      <th>組合名稱</th>
+      <th>價格</th>
+      <th>數量</th>
+      <th>加麵數</th>
+      <th>加辣</th>
+    </tr>
   </thead>
   <tbody id="comboBody"></tbody>
 </table>
@@ -104,14 +110,16 @@ h2 {
 
 
 <table class="menu-table" id="menuTable">
-  <thead><tr>
-    <th style="width:5%"></th>
-    <th style="width:50%">品項</th>
-    <th style="width:15%">價格</th>
-    <th style="width:15%">數量</th>
-    <th style="width:15%">加飯／加麵</th>
-    <th style="width:15%">加辣</th>
-  </tr></thead>
+  <thead>
+    <tr>
+      <th style="width:5%"></th>
+      <th style="width:50%">品項</th>
+      <th style="width:15%">價格</th>
+      <th style="width:15%">數量</th>
+      <th style="width:15%">加飯／加麵</th>
+      <th style="width:15%">加辣</th>
+    </tr>
+  </thead>
   <tbody id="menuBody">
   <tr><th colspan="5" style="text-align:left; background:#f0f0f0">蓋飯</th></tr>
 <tr><td colspan="1"></td><td>回鍋肉蓋飯</td><td>100</td><td><input type="number" min="0" value="0" data-name="回鍋肉蓋飯" data-price="100"></td><td><input type="number" min="0" value="0" data-addon="10" style="width:50px;" /></td><td><input type="number" min="0" value="0" data-spicy="0" style="width:50px;" /></td></tr>
@@ -205,12 +213,12 @@ function addCombo() {
   if (document.getElementById(comboName)) return;
 
   const rowHTML = `<tr id="${comboName}">
-  <td>${comboName}</td>
-  <td>${comboPrice}</td>
-  <td><input type="number" min="0" value="0" data-name="${comboName}" data-price="${comboPrice}"></td>
-  <td><input type="number" min="0" value="0" data-addon="25" style="width:50px;" /></td>
-  <td><input type="number" min="0" value="0" data-spicy="0" style="width:50px;" /></td>
-</tr>`;
+    <td>${comboName}</td>
+    <td>${comboPrice}</td>
+    <td><input type="number" min="0" value="0" data-name="${comboName}" data-price="${comboPrice}"></td>
+    <td><input type="number" min="0" value="0" data-addon="25" style="width:50px;" /></td>
+    <td><input type="number" min="0" value="0" data-spicy="0" style="width:50px;" /></td>
+  </tr>`;
   document.getElementById("comboBody").insertAdjacentHTML("beforeend", rowHTML);
 }
 
@@ -240,9 +248,11 @@ function printMenu() {
   const inputs = document.querySelectorAll("input[type='number']");
   let rows = "";
   let total = 0, totalQty = 0, totalAddon = 0, totalSpicy = 0;
+
   inputs.forEach(i => {
     const qty = Number(i.value);
     if (!i.dataset.name || qty === 0) return;
+
     const name = i.dataset.name;
     const price = Number(i.dataset.price);
     const row = i.closest("tr");
@@ -260,7 +270,14 @@ function printMenu() {
     totalAddon += addonQty;
     totalSpicy += spicyQty;
 
-    rows += '<tr><td>' + name + '</td><td>' + price + '</td><td>' + qty + '</td><td>' + addonQty + '</td><td>' + spicyQty + '</td><td>' + subtotal + '</td></tr>';
+    rows += `<tr>
+      <td>${name}</td>
+      <td>${price}</td>
+      <td>${qty}</td>
+      <td>${addonQty}</td>
+      <td>${spicyQty}</td>
+      <td>${subtotal}</td>
+    </tr>`;
   });
 
   if (!rows) {
@@ -268,15 +285,23 @@ function printMenu() {
     return;
   }
 
-  let html = '<html><head><title>列印菜單</title>';
-  html += '<style>body{font-family: Noto Sans TC, sans-serif; margin: 0; padding: 20px;} table{width: 100%; border-collapse: collapse;} th,td{border:1px solid #000; padding:5px;}</style>';
-  html += '</head><body>';
-  html += '<h3>統計</h3><table>';
-  html += '<tr><th>品項</th><th>單價</th><th>數量</th><th>加飯/麵</th><th>加辣</th><th>小計</th></tr>';
+  let html = `<html><head><title>列印菜單</title>
+  <style>
+    body { font-family: Noto Sans TC, sans-serif; margin: 0; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #000; padding: 5px; }
+  </style></head><body>`;
+  html += `<h3>統計</h3><table>
+    <tr><th>品項</th><th>單價</th><th>數量</th><th>加飯/麵</th><th>加辣</th><th>小計</th></tr>`;
   html += rows;
   html += `</table><p style="margin-top: 20px;">（共${totalQty}份，${totalAddon}份加飯/麵，${totalSpicy}份加辣）</p>`;
   html += `<p style="margin-top: 20px; font-weight: bold;">總金額：${total} 元</p>`;
-  html += '<p style="margin-top: 40px; line-height: 1.6;">大瑞科技<br>地址: 高雄市大寮區鳳林二路532號<br>電話: (07)7871875</p>';
+  html += `<p style="margin-top: 40px; line-height: 1.6; font-size: 1.2em; font-weight: bold;">
+  大瑞科技<br>
+  地址: 高雄市大寮區鳳林二路532號<br>
+  電話: (07)7871875
+</p>`;
+
   html += '</body></html>';
 
   const win = window.open('', '', 'width=800,height=600');
